@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>첫걸음 · 작게 시작해도 괜찮아요</title>
+  <style>
+    :root { --ink:#293d36; --muted:#5e7068; --green:#315e49; --paper:#faf9f5; --line:#dce4dc; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; scroll-padding-top:24px; }
+    body { margin:0; background:var(--paper); color:var(--ink); font-family:"Malgun Gothic","Apple SD Gothic Neo",sans-serif; line-height:1.7; padding-bottom:100px; }
+    main, .header-inner { max-width:1020px; margin:auto; padding:0 24px; }
+    header { border-bottom:1px solid var(--line); }
+    .header-inner { min-height:80px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+    .brand { font-size:23px; font-weight:800; letter-spacing:-1px; }
+    .brand span { display:inline-grid; place-items:center; width:34px; height:34px; background:#e3ecdf; border-radius:12px; margin-right:9px; font-size:19px; }
+    .tag { color:var(--muted); font-size:13px; }
+    .header-support { font-size:14px; font-weight:700; padding:9px 14px; border:1px solid #a6bca6; border-radius:10px; background:#edf2e8; text-decoration:none; }
+    .support-banner { display:flex; align-items:center; justify-content:space-between; gap:18px; padding:20px 24px; margin:0 0 24px; background:#e6efe2; border:1px solid #a6bca6; border-left:5px solid var(--green); border-radius:14px; }
+    .support-banner strong { display:block; margin-bottom:3px; }
+    .support-banner p { margin:0; color:var(--muted); font-size:14px; }
+    .support-banner a { flex-shrink:0; font-weight:700; border:1px solid var(--green); border-radius:9px; padding:9px 14px; background:white; text-decoration:none; }
+    .hero { padding:58px 0 28px; max-width:760px; }
+    .eyebrow { color:var(--green); font-size:12px; letter-spacing:2px; font-weight:700; }
+    h1 { font-size:clamp(30px,5vw,43px); line-height:1.4; letter-spacing:-1.5px; margin:12px 0 16px; }
+    h2 { font-size:23px; letter-spacing:-.7px; margin:0 0 12px; }
+    p { margin:0 0 12px; }
+    .muted, .intro { color:var(--muted); }
+    .input-panel { padding:27px; background:white; border:1px solid var(--line); border-radius:22px; box-shadow:0 8px 32px #293d3605; }
+    label { display:block; font-weight:700; margin-bottom:10px; }
+    textarea { width:100%; min-height:126px; resize:vertical; border:1px solid #b6c5b9; border-radius:12px; padding:16px; font:inherit; color:var(--ink); background:#fdfdfa; }
+    textarea::placeholder { color:#77847b; }
+    :focus-visible { outline:3px solid #8cae75; outline-offset:4px; }
+    .form-bottom { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px; margin-top:14px; }
+    .small { font-size:13px; color:var(--muted); }
+    button { font:inherit; border:1px solid var(--line); border-radius:10px; padding:10px 17px; cursor:pointer; color:var(--ink); background:white; }
+    #nearby-counseling { margin:8px 0; }
+    #counseling-area label { display:block; margin:8px 0; }
+    #counseling-district { max-width:100%; margin-bottom:8px; }
+    button:hover:enabled { background:#eaf0e6; }
+    .primary { background:var(--green); color:white; border-color:var(--green); font-weight:700; padding:12px 24px; }
+    .primary:hover:enabled { background:#254c39; }
+    button:disabled { opacity:.6; cursor:not-allowed; }
+    #status { min-height:32px; margin:15px 0 0; color:var(--green); font-size:14px; }
+    #error { color:#8a382d; background:#fff0e9; padding:12px 16px; border-radius:10px; margin-bottom:20px; }
+    [hidden] { display:none !important; }
+    #results { padding-top:26px; }
+    #context { overflow-wrap:anywhere; }
+    #cards { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin:20px 0; }
+    .card { display:flex; flex-direction:column; background:white; border:1px solid var(--line); border-radius:18px; padding:23px; overflow-wrap:anywhere; }
+    .card-top { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:14px; }
+    .number { font-size:13px; font-weight:800; color:var(--green); }
+    .time { color:var(--green); background:#edf2e8; border-radius:20px; font-size:12px; padding:4px 10px; }
+    h3 { font-size:18px; margin:0 0 11px; line-height:1.55; }
+    .description { font-size:14px; color:var(--muted); white-space:pre-wrap; }
+    .criteria { border-top:1px solid var(--line); padding-top:13px; margin-top:8px; font-size:13px; }
+    .criteria strong { display:block; font-size:12px; color:var(--green); margin-bottom:5px; }
+    .actions { margin-top:auto; padding-top:18px; display:flex; gap:8px; flex-wrap:wrap; }
+    .actions button { font-size:13px; padding:8px 11px; }
+    #feedback { padding:19px 22px; background:#eaf0e3; border-radius:14px; overflow-wrap:anywhere; }
+    .support { margin-top:55px; padding:26px; background:#f0f1eb; border-radius:18px; scroll-margin-bottom:100px; }
+    .support h2 { font-size:20px; }
+    .support p, .support li { font-size:14px; color:var(--muted); }
+    .support ul { padding-left:22px; }
+    a { color:var(--green); text-underline-offset:4px; }
+    footer { position:fixed; bottom:0; left:0; right:0; z-index:5; border-top:1px solid var(--line); background:#faf9f5f5; padding:14px 24px; text-align:center; box-shadow:0 -4px 20px #293d3604; }
+    footer a { font-size:14px; font-weight:700; display:inline-block; padding:5px 14px; }
+    @media (max-width:720px) { #cards { grid-template-columns:1fr; } .hero { padding-top:35px; } .header-inner { min-height:68px; } .tag { font-size:11px; } .input-panel,.card,.support { padding:20px; } }
+    @media (max-width:420px) { main,.header-inner { padding-left:17px; padding-right:17px; } .primary { width:100%; } .support-banner { align-items:flex-start; flex-direction:column; padding:18px; gap:12px; } .header-support { font-size:12px; padding:8px 10px; } }
+    @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
+  </style>
+</head>
+<body>
+  <header><div class="header-inner"><div class="brand"><span aria-hidden="true">↗</span>첫걸음</div><a class="header-support" href="#support">전문 지원 안내 ↗</a></div></header>
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="eyebrow">작은 행동부터 하나씩</div>
+      <h1 id="hero-title">지금은 첫걸음 하나면<br>충분해요.</h1>
+      <p class="intro">막막한 할 일을 적어주세요. 시작해 볼 수 있는 작은 행동 3개를 함께 찾아볼게요.</p>
+    </section>
+    <aside class="support-banner" aria-label="전문 지원 안내 바로가기">
+      <div><strong>전문 지원 안내</strong><p>누군가와 이야기하고 싶다면, 교내 상담센터 등 이용할 수 있는 지원 경로를 살펴보세요.</p></div>
+      <a href="#support">지원 경로 보기 ↗</a>
+    </aside>
+    <form id="task-form" class="input-panel" novalidate>
+      <label for="task">어떤 일을 시작하고 싶나요?</label>
+      <textarea id="task" name="task" maxlength="{{ max_task_length }}" required placeholder="예: 교양 수업 보고서 작성하기" aria-describedby="input-help counter"></textarea>
+      <div class="form-bottom"><div><div id="input-help" class="small">전체를 끝내기보다, 2~5분의 시작 행동을 찾아요.</div><div id="counter" class="small">0 / {{ max_task_length }}자</div></div><button id="submit" class="primary" type="submit">첫걸음 만들기</button></div>
+      <p class="small" style="margin-top:15px">입력 내용은 행동 제안을 위해 OpenAI로 전송돼요. 이름·연락처 등 개인정보는 적지 않아도 괜찮아요. 이 서비스는 입력과 결과를 저장하지 않아요.</p>
+    </form>
+    <div id="status" role="status" aria-live="polite"></div>
+    <div id="error" role="alert" hidden></div>
+    <section id="results" aria-labelledby="result-title" aria-busy="false" hidden>
+      <h2 id="result-title" tabindex="-1">시작해 볼 작은 행동 3개</h2>
+      <p id="context" class="muted"></p>
+      <p class="small">예상 시간은 각 행동을 시도하는 시간이에요. 전체 과제의 완료 시간을 뜻하지 않아요.</p>
+      <div id="cards"></div>
+      <p id="feedback"></p>
+      <p class="small" style="margin-top:12px">‘어려워요’는 선택한 행동을 더 쉬운 시작 행동 3개로, ‘쉬워요’는 조금 더 도전적인 다음 행동 3개로 바꿔요. 두 버튼 모두 현재 카드 3개를 새 제안으로 교체해요. ‘쉬워요’를 눌러도 완료로 기록되지는 않아요.</p>
+    </section>
+    <section id="support" class="support" aria-labelledby="support-title" tabindex="-1">
+      <h2 id="support-title">혼자 정리하기 어려울 때, 전문 지원 안내</h2>
+      <p>학업이나 생활의 어려움을 누군가와 이야기하고 싶다면 아래 경로를 살펴볼 수 있어요. 이용 여부는 스스로 선택할 수 있어요.</p>
+      <ul>
+        <li><strong>교내 학생상담센터·심리상담센터:</strong> 건양대학교 학생상담센터에서 상담 신청 방법·운영 시간·비용·비밀보장 범위를 확인해 보세요.</li>
+        <li><strong>교내 학습지원센터·지도교수:</strong> 학습 계획이나 과제 진행에 관한 도움을 요청할 수 있어요. 학교 홈페이지의 학생 지원 메뉴를 확인해 보세요.</li>
+        <li>
+          <button id="nearby-counseling" class="primary" type="button" data-maps-key="{{ maps_key }}" aria-describedby="location-purpose location-privacy">지역 상담기관 찾기 <span aria-hidden="true">↗</span></button>
+          <div id="location-purpose" class="small">근처에 있는 상담기관을 제공하는데 사용됩니다</div>
+          <div id="location-privacy" class="small">위치를 허용하면 현재 위치를 한 번 가져와 Google 검색(Places)에 전달하며, 첫걸음에는 저장하지 않습니다.</div>
+          <div id="counseling-status" role="status"></div>
+          <form id="counseling-area" hidden>
+            <label for="counseling-district">시·군·구 직접 검색</label>
+            <input id="counseling-district" required maxlength="80" placeholder="예: 논산시">
+            <button type="submit">Google에서 검색</button>
+          </form>
+        </li>
+      </ul>
+      <h3>전화로 상담받기</h3>
+      {% macro phone(number, destination) -%}
+        {% if phone_links %}<a href="{{ destination }}">{{ number }}</a>{% else %}<span>{{ number }}</span>{% endif %}
+      {%- endmacro %}
+      <ul>
+        <li><strong>정신건강 위기상담전화:</strong> {{ phone('1577-0199', 'tel:1577-0199') }} — 24시간 연중무휴, 가까운 정신건강복지센터로 연결됩니다.</li>
+        <li><strong>보건복지상담센터:</strong> {{ phone('129', 'tel:129') }} — 국번 없이 129, 복지 및 정신건강 상담. 일반 상담은 평일 09:00~18:00, 정신건강 등 긴급지원 상담은 24시간 이용할 수 있어요.</li>
+        <li><strong>자살예방 상담전화:</strong> {{ phone('109', 'tel:+82109?oai_link_source=model_response_hotline') }} — 24시간 자살예방 전문 상담 통합 번호.</li>
+      </ul>
+      {% if campus_support_url %}
+      <p><a href="{{ campus_support_url }}" target="_blank" rel="noopener noreferrer">우리 학교 상담센터 안내 열기 ↗</a></p>
+      {% else %}
+      <p class="small">학교별 링크는 아직 설정되지 않았어요. 운영자는 서버의 <code>CAMPUS_SUPPORT_URL</code>에 해당 학교의 공식 상담센터 주소를 설정할 수 있어요.</p>
+      {% endif %}
+      <p class="small">첫걸음은 할 일을 작게 나누는 도구이며 의학적 판단이나 진단을 제공하지 않아요.</p>
+    </section>
+  </main>
+  <footer><a href="#support">전문 지원 안내 ↗</a></footer>
+  <script>
+    'use strict';
+    const form = document.querySelector('#task-form');
+    const input = document.querySelector('#task');
+    const submit = document.querySelector('#submit');
+    const status = document.querySelector('#status');
+    const error = document.querySelector('#error');
+    const results = document.querySelector('#results');
+    const cards = document.querySelector('#cards');
+    const maxLength = Number(input.maxLength);
+    let busy = false;
+    let currentTask = '';
+    const textLength = value => Array.from(value).length;
+
+    input.addEventListener('input', () => {
+      document.querySelector('#counter').textContent = `${textLength(input.value)} / ${maxLength}자`;
+      input.removeAttribute('aria-invalid');
+    });
+    function showError(message) { error.textContent = message; error.hidden = false; }
+    function setBusy(value) {
+      busy = value;
+      submit.disabled = value;
+      input.disabled = value;
+      submit.textContent = value ? '작은 행동을 찾고 있어요…' : '첫걸음 만들기';
+      cards.querySelectorAll('button[data-refine]').forEach(button => { button.disabled = value; });
+      results.setAttribute('aria-busy', String(value));
+    }
+    function element(tag, className, text) {
+      const node = document.createElement(tag);
+      if (className) node.className = className;
+      if (text !== undefined) node.textContent = text;
+      return node;
+    }
+    function validResult(data) {
+      return data && Array.isArray(data.steps) && data.steps.length === 3 &&
+        typeof data.feedback === 'string' && data.feedback.trim() &&
+        data.steps.every(step => step && ['title','description','completion_criteria'].every(key =>
+          typeof step[key] === 'string' && step[key].trim()) &&
+          Number.isInteger(step.minutes) && step.minutes >= 2 && step.minutes <= 5);
+    }
+    function render(data, task, selected, advancing = false) {
+      const fragment = document.createDocumentFragment();
+      data.steps.forEach((step, index) => {
+        const card = element('article', 'card');
+        const top = element('div', 'card-top');
+        top.append(element('span', 'number', `STEP 0${index + 1}`), element('span', 'time', `약 ${step.minutes}분`));
+        const criteria = element('p', 'criteria');
+        criteria.append(element('strong', '', '이렇게 되면 완료'), document.createTextNode(step.completion_criteria));
+        const actions = element('div', 'actions');
+        const harder = element('button', '', '어려워요');
+        harder.type = 'button';
+        harder.dataset.refine = 'true';
+        harder.setAttribute('aria-label', `${index + 1}번 행동 ‘${step.title}’을 더 쉽게 나누기`);
+        harder.addEventListener('click', () => requestSteps('/api/refine', {task: currentTask, step}, step.title));
+        const easier = element('button', '', '쉬워요');
+        easier.type = 'button';
+        easier.dataset.refine = 'true';
+        easier.setAttribute('aria-label', `${index + 1}번 행동 ‘${step.title}’에서 조금 더 도전적인 다음 행동 만들기`);
+        easier.addEventListener('click', () => requestSteps('/api/advance', {task: currentTask, step}, step.title));
+        actions.append(harder, easier);
+        card.append(top, element('h3', '', step.title), element('p', 'description', step.description), criteria, actions);
+        fragment.append(card);
+      });
+      cards.replaceChildren(fragment);
+      document.querySelector('#feedback').textContent = data.feedback;
+      document.querySelector('#context').textContent = selected ? advancing ? `‘${selected}’에서 이어갈 조금 더 도전적인 다음 행동 3개예요. 원래 할 일: ${task}` : `‘${selected}’을 더 쉬운 시작 행동 3개로 바꿨어요. 원래 할 일: ${task}` : `함께 시작할 일: ${task}`;
+      currentTask = task;
+      results.hidden = false;
+      document.querySelector('#result-title').focus();
+    }
+    async function requestSteps(url, payload, selected = null) {
+      if (busy) return;
+      error.hidden = true;
+      setBusy(true);
+      const advancing = url === '/api/advance';
+      status.textContent = selected ? advancing ? `‘${selected}’에서 이어갈 다음 행동을 찾고 있어요…` : `‘${selected}’을 더 쉽게 나누고 있어요…` : '시작해 볼 작은 행동을 찾고 있어요…';
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 35000);
+      try {
+        const response = await fetch(url, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload), signal:controller.signal});
+        let data;
+        try { data = await response.json(); } catch { throw new Error('서버 응답을 읽지 못했어요. 잠시 후 다시 시도해 주세요.'); }
+        if (!response.ok) throw new Error(data?.error?.message || '요청을 처리하지 못했어요. 다시 시도해 주세요.');
+        if (!validResult(data)) throw new Error('행동 제안의 형식을 확인하지 못했어요. 다시 시도해 주세요.');
+        render(data, payload.task, selected, advancing);
+        status.textContent = '작은 행동 3개를 준비했어요. 편한 행동부터 살펴보세요.';
+      } catch (failure) {
+        status.textContent = '';
+        showError(failure.name === 'AbortError' ? '응답 시간이 길어졌어요. 잠시 후 다시 시도해 주세요.' : failure instanceof TypeError ? '서버에 연결하지 못했어요. 연결 상태를 확인한 뒤 다시 시도해 주세요.' : failure.message);
+      } finally {
+        clearTimeout(timer);
+        setBusy(false);
+      }
+    }
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      if (busy) return;
+      const task = input.value.trim();
+      if (!task || textLength(input.value) > maxLength) {
+        showError(!task ? '시작하고 싶은 할 일을 적어주세요.' : '할 일은 1,000자 이내로 적어주세요.');
+        input.setAttribute('aria-invalid', 'true');
+        input.focus();
+        return;
+      }
+      requestSteps('/api/split', {task});
+    });
+  </script>
+  <script type="module" src="{{ url_for('static', filename='counseling.js') }}"></script>
+</body>
+</html>
